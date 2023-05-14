@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrapper" id="app">
+        <header class="header">
+            <div class="heder-content container">
+                <a href="#" class="header-content__logo">Baskay <span>Time</span> </a>
+                <ul class="header-content__menu">
+                    <span>+7 (988) 745 55 43</span>
+                    <a href="#">Перезвоните мне</a>
+                    <button>Оформить заказ</button>
+                </ul>
+                <a href="#" class="header-content__link">марафоны</a>
+            </div>
+        </header>
+        <main class="main">
+            <section class="intro container">
+                <img class="intro-img" src="./assets/images/Intro.jpg" alt="">
+                <button class="intro-btn">ВЫБРАТЬ</button>
+            </section>
+            <section class=" profits container">
+                <h2 class="section-caption">Как работает BaskayTime</h2>
+                <div class="profits-line">
+                    <div class="profits-line__item">
+                        <img src="./assets/images/profit-calc.svg" alt="">
+                        <span>Расчитаем <br>
+                            Кбжу</span>
+                    </div>
+                    <div class="profits-line__item">
+                        <img src="./assets/images/profit-vegetabble.svg" alt="">
+                        <span>Приготовим вкусыне <br>
+                            и <br>
+                            полезные блюда</span>
+                    </div>
+                    <div class="profits-line__item">
+                        <img src="./assets/images/profit-heart.svg" alt="">
+                        <span>Немного любви </span>
+                    </div>
+                    <div class="profits-line__item">
+                        <img src="./assets/images/profit-track.svg" alt="">
+                        <span>Доставим прямо к <br>
+                            дому
+                        </span>
+                    </div>
+                </div>
+            </section>
+            <section class="programs container">
+                <h2 class="section-caption">Выберите программу</h2>
+                <div class="categories__line">
+                    <div :class="{active :currentCategory == category.name }"
+                        @click="currentCategory = category.name, menu" v-for="category in categories" :key="category.id"
+                        class="category">
+                        <span class="category-name">{{category.name}}</span> <br>
+                        <span class="category-dishes">{{category.dishes}} блюд(а)</span>
+                    </div>
+
+                </div>
+                <div class="current-program">
+                    <div class="product-line">
+                        <product v-for="product in currentArr" :key="product" :product="product"
+                            @editprod="editProduct">
+                        </product>
+                    </div>
+                    <div v-if="updateArr!=0" class="update-product__line">
+                        <div class="update-product__line-slider">
+                            <div v-for="product in updateArr" :key="product.id" class="update-product">
+                                <div class="product-elements">
+                                    <span>Б <br>
+                                        {{product.proteins}}
+                                    </span>
+                                    <span>Ж <br>
+                                        {{product.fats}}
+                                    </span>
+                                    <span>У <br>
+                                        {{product.carbohdrate}}
+                                    </span>
+                                </div>
+                                <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
+                                <div>
+                                    <span class="product-category">{{product.category}}</span>
+                                    <span class="product-calories">{{product.calories}} (Ккал)</span>
+                                </div>
+                                <div>
+                                    <span class="product-name">{{product.name}}</span>
+                                    <button @click="updateProduct(product)" class="product-btn">Выбрать</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </section>
+            <section class="result container">
+                <h2 class="section-caption">C нами худеют!</h2>
+                <div class="slider-wrapper">
+                    <div :style="{'margin-left': '-' + (currentSlide * 110 + '%') }" class="slider">
+                        <div :class="{active : currentSlide == client.id }" v-for="client in clients" :key="client.id"
+                            class="slide">
+                            <div class="slide-img__contaienr">
+                                <img :src="'../assets/images/' + client.img" alt="" class="slide-img">
+                            </div>
+                            <div class="slide-content">
+                                <span class="slide-content__name">{{client.name}},{{client.howOld}} лет</span>
+                                <ul class="slide-content__menu">
+                                    <li class="slide-content__list">{{client.programmCount}} дней</li>
+                                    <li class="slide-content__list"> по программе: {{client.programmName}}</li>
+                                </ul>
+                                <span class="slide-content__comment">
+                                    {{client.comment}}
+                                </span>
+                                <button class="slide-content__button">Хочу так же</button>
+                                <div class="slide-content__result">
+                                    -{{client.result}} кг
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <img :class="{disable : currentSlide == 0}" @click="prevSlide()" src="./assets/images/Arrow.png"
+                        alt="" class="slider-btn prev-btn">
+                    <img :class="{disable : clients.length - 1 == currentSlide }" @click="nextSlide()"
+                        src="./assets/images/Arrow1.png" alt="" class="slider-btn next-btn">
+                    <div class="pagination-line">
+                        <span v-for="pag in clients" :key="pag.id" @click="currentSlide = pag.id"
+                            :class="{active : pag.id == currentSlide}" class="pagination"></span>
+                    </div>
+                </div>
+            </section>
+            <section class="advice">
+                <h2 class="section-caption">Для чего это нужно?</h2>
+                <div class="advice-items">
+                    <div class="advice-item">
+                        <div class="advice-item__content">
+                            <h3 class="advice-item__caption">Здоровье</h3>
+                            <span>Вы приведёте в норму сердечно-сосудистую систему,
+                                похудение значительно облегчает работу сердца.</span>
+                            <span>Вы сможете подниматься по лестнице без одышки: она уходит вместе с лишними
+                                килограммами,
+                                как и пришла.</span>
+                            <span>Нормализация веса позволяет избавиться от депрессии, улучшает психологическое
+                                состояние
+                                человека.</span>
+                            <span>Вы помолодеете: похудение даёт такой эффект, если худеть правильно и принимать
+                                витамины.</span>
+                        </div>
+
+                        <div class="advice-item__img-container">
+                            <img src="./assets/images/bigheart.jpg" alt="" class="advice-item__img">
+                        </div>
+                    </div>
+                    <div class="advice-item">
+                        <div class="advice-item__img-container">
+                            <img src="./assets/images/girl.jpg" alt="" class="advice-item__img">
+                        </div>
+                        <div class="advice-item__content">
+                            <h3 class="advice-item__caption">Уверенность в себе</h3>
+                            <span>Похудев, вы наверняка будете вызывать зависть и восхищение, отвечать на расспросы
+                                изумлённых коллег, друзей и родных.</span>
+                            <span>Вы покажете пример другим, и, возможно, этим измените чью-то жизнь к лучшему.</span>
+                            <span>Похудение облегчит процесс ходьбы: вы станете легче, без усилий будете проходить
+                                дальние дистанции.</span>
+                            <span>Похудение позволяет поднять самооценку, вы станете больше себя ценить, что повлияет на
+                                всю вашу жизнь. Для многих похудение — это начало перемен в карьере, в личной
+                                жизни.</span>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+            <section class="faq container">
+                <h2 class="section-caption">Часто задаваемые вопросы</h2>
+                <div class="faq-button-line">
+                    <div :class="{'active': currentFaq == tem.id}" v-for="tem in tems" :key="tem.id"
+                        @click="currentFaq = tem.id" class="faq-button__section">
+                        <img :src="'./assets/images/' + tem.img" class="faq-button__section-img"></img>
+                        <span class="faq-button__section-title">{{tem.title}}</span>
+                    </div>
+                </div>
+                <div class="faq-table">
+                    <div @click="currentQestion = faq.id" v-for="faq in filtredFaq" :key="faq.id" class="faq-question">
+                        <span :class="{'active': currentQestion == faq.id}" class="question">{{faq.question}}</span>
+                        <span v-show="currentQestion == faq.id " class="answer">{{faq.answer}}</span>
+
+                    </div>
+                </div>
+
+            </section>
+        </main>
+        <footer class="footer container">
+            <span>2023 © Все права защищены</span>
+            <div class="footer__icons">
+                <img src="./assets/images/telegram 1.svg" alt="" class="footer__icon">
+                <img src="./assets/images/twitter 1.svg" alt="" class="footer__icon">
+                <img src="./assets/images/instagram 1.svg" alt="" class="footer__icon">
+            </div>
+        </footer>
+    </div>
+    <script src="js/vue.global.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/jquery-3.6.4.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script src="js/main2.js"></script>
+</body>
+
+</html>
