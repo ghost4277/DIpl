@@ -71,7 +71,14 @@
                         </product>
                     </div>
                     <div v-if="updateArr!=0" class="update-product__line">
-                        <div class="update-product__line-slider">
+                        <img @click="updateArr=0;currentUpdateProduct=0" src="/assets/images/krest.png" alt=""
+                            class="update-product__krestik">
+                        <img @click="prevProduct" src="/assets/images/left_arr.png" alt=""
+                            class="update-product__arrow update-product__arrow--left">
+                        <img @click="nextProduct" src="/assets/images/left_arr.png" alt=""
+                            class="update-product__arrow update-product__arrow--right">
+                        <div :style="{'margin-left': '-' + (currentUpdateProduct * 106.5 + '%') }"
+                            class="update-product__line-slider">
                             <div v-for="product in updateArr" :key="product.id" class="update-product">
                                 <div class="product-elements">
                                     <span>Б <br>
@@ -83,16 +90,12 @@
                                     <span>У <br>
                                         {{product.carbohdrate}}
                                     </span>
+                                    <span class="update-product-calories">{{product.calories}} калорий</span>
+
                                 </div>
                                 <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
-                                <div>
-                                    <span class="product-category">{{product.category}}</span>
-                                    <span class="product-calories">{{product.calories}} (Ккал)</span>
-                                </div>
-                                <div>
-                                    <span class="product-name">{{product.name}}</span>
-                                    <button @click="updateProduct(product)" class="product-btn">Выбрать</button>
-                                </div>
+                                <span class="update-product-name">{{product.name}}</span>
+                                <button @click="updateProduct(product)" class="update-product-btn">Выбрать</button>
                             </div>
                         </div>
 
@@ -182,7 +185,9 @@
                 <div class="faq-button-line">
                     <div :class="{'active': currentFaq == tem.id}" v-for="tem in tems" :key="tem.id"
                         @click="currentFaq = tem.id" class="faq-button__section">
-                        <img :src="'./assets/images/' + tem.img" class="faq-button__section-img"></img>
+                        <img v-if="currentFaq !== tem.id" :src="'./assets/images/' + tem.img"
+                            class="faq-button__section-img"></img>
+                        <img v-else :src="'./assets/images/' + tem.img1" class="faq-button__section-img"></img>
                         <span class="faq-button__section-title">{{tem.title}}</span>
                     </div>
                 </div>

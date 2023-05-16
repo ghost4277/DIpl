@@ -76,10 +76,10 @@ const App = {
                 { id: 2, name: 'Сослан', howOld: 60, img: "client(1).jpg", programmName: "'Полное'", programmCount: 30, comment: "ффффаааааафа", result: 30, },
             ],
             tems: [
-                { id: 0, img: 'tomato.svg', title: 'Продукты' },
-                { id: 1, img: 'card.svg', title: 'Оплата и доставка' },
-                { id: 2, img: 'body.svg', title: 'Похудение' },
-                { id: 3, img: 'sneg.svg', title: 'Хранение' },
+                { id: 0, img: 'tomato.svg', img1: 'tomato-white.svg', title: 'Продукты' },
+                { id: 1, img: 'card.svg', img1: 'card-white.svg', title: 'Оплата и доставка' },
+                { id: 2, img: 'body.svg', img1: 'body-white.svg', title: 'Похудение' },
+                { id: 3, img: 'sneg.svg', img1: 'sneg-white.svg', title: 'Хранение' },
             ],
             faq: [
                 { id: 0, categoryId: 1, question: 'Какой-то вопрос', answer: 'Ответ' },
@@ -102,6 +102,7 @@ const App = {
             currentSlide: 0,
             currentArr: [],
             updateArr: [],
+            currentUpdateProduct: 0,
         }
     },
     methods: {
@@ -144,7 +145,7 @@ const App = {
             this.updateArr = [];
             let index = this.currentArr.findIndex(el => el.category === product.category);
             this.currentArr.splice(index, 1, product);
-
+            this.currentUpdateProduct = 0;
         },
         prevSlide() {
             if (this.currentSlide == 0) this.currentSlide = 0;
@@ -155,6 +156,18 @@ const App = {
             if (this.clients.length - 1 <= this.currentSlide) this.currentSlide = this.currentSlide;
             else this.currentSlide++;
 
+        },
+        prevProduct() {
+            if (this.currentUpdateProduct == 0) this.currentUpdateProduct = 0;
+            else this.currentUpdateProduct--;
+        },
+        nextProduct() {
+
+            if (Math.ceil(this.updateArr.length / 3) === this.currentUpdateProduct + 1) this.currentUpdateProduct = this.currentUpdateProduct;
+            else this.currentUpdateProduct++;
+
+            console.log(Math.floor(this.updateArr.length / 3));
+            console.log(this.currentUpdateProduct);
         },
         randomIndex(array) {
             const index = Math.floor(Math.random() * (array.length - 1))
