@@ -15,9 +15,9 @@
             <div class="heder-content container">
                 <a href="#" class="header-content__logo">Baskay <span>Time</span> </a>
                 <ul class="header-content__menu">
-                    <span>+7 (988) 745 55 43</span>
-                    <a href="#">Перезвоните мне</a>
-                    <button>Оформить заказ</button>
+                    <a class="header-content__menu-tel" href="tel:+79897483227">+7 (989) 748 32-27</a>
+                    <a @click="currentPopUp=1" href="#">Перезвоните мне</a>
+                    <a href="#menu"><button>Оформить заказ</button></a>
                 </ul>
                 <a href="#" class="header-content__link">марафоны</a>
             </div>
@@ -25,9 +25,9 @@
         <main class="main">
             <section class="intro container">
                 <img class="intro-img" src="./assets/images/Intro.jpg" alt="">
-                <button class="intro-btn">ВЫБРАТЬ</button>
+                <a href="#menu"><button class="intro-btn"> ВЫБРАТЬ</button></a>
             </section>
-            <section class=" profits container">
+            <section id="menu" class=" profits container">
                 <h2 class="section-caption">Как работает BaskayTime</h2>
                 <div class="profits-line">
                     <div class="profits-line__item">
@@ -54,7 +54,7 @@
                 </div>
             </section>
             <section class="programs container">
-                <h2 class="section-caption">Выберите программу</h2>
+                <h2 class=" section-caption">Выберите программу</h2>
                 <div class="categories__line">
                     <div :class="{active :currentCategory == category.name }"
                         @click="currentCategory = category.name, menu" v-for="category in categories" :key="category.id"
@@ -69,36 +69,48 @@
                         <product v-for="product in currentArr" :key="product" :product="product"
                             @editprod="editProduct">
                         </product>
-                    </div>
-                    <div v-if="updateArr!=0" class="update-product__line">
-                        <img @click="updateArr=0;currentUpdateProduct=0" src="/assets/images/krest.png" alt=""
-                            class="update-product__krestik">
-                        <img @click="prevProduct" src="/assets/images/left_arr.png" alt=""
-                            class="update-product__arrow update-product__arrow--left">
-                        <img @click="nextProduct" src="/assets/images/left_arr.png" alt=""
-                            class="update-product__arrow update-product__arrow--right">
-                        <div :style="{'margin-left': '-' + (currentUpdateProduct * 106.5 + '%') }"
-                            class="update-product__line-slider">
-                            <div v-for="product in updateArr" :key="product.id" class="update-product">
-                                <div class="product-elements">
-                                    <span>Б <br>
-                                        {{product.proteins}}
-                                    </span>
-                                    <span>Ж <br>
-                                        {{product.fats}}
-                                    </span>
-                                    <span>У <br>
-                                        {{product.carbohdrate}}
-                                    </span>
-                                    <span class="update-product-calories">{{product.calories}} калорий</span>
-
-                                </div>
-                                <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
-                                <span class="update-product-name">{{product.name}}</span>
-                                <button @click="updateProduct(product)" class="update-product-btn">Выбрать</button>
+                        <div v-for="element in totalCalories" :key="element.id" class="total-calories">
+                            <h2>В рационе: </h2>
+                            <span> <b>{{element.calories}}</b> (Ккал)</span>
+                            <div class="total-elements">
+                                <span> <b>{{element.proteins}}</b> <br> Белки</span>
+                                <span> <b>{{element.fats}}</b> <br> Жиры</span>
+                                <span> <b>{{element.carbohdrate}}</b> <br> Углеводы</span>
                             </div>
                         </div>
+                    </div>
+                    <button @click="currentPopUp = 2" class="current-program__button">Беру</button>
 
+                    <div v-if="updateArr!=0" class="update-product__line-container">
+                        <div class="update-product__line">
+                            <img @click="updateArr=0;currentUpdateProduct=0" src="/assets/images/krest.png" alt=""
+                                class="update-product__krestik">
+                            <img @click="prevProduct" src="/assets/images/left_arr.png" alt=""
+                                class="update-product__arrow update-product__arrow--left">
+                            <img @click="nextProduct" src="/assets/images/left_arr.png" alt=""
+                                class="update-product__arrow update-product__arrow--right">
+                            <div :style="{'margin-left': '-' + (currentUpdateProduct * 106.5 + '%') }"
+                                class="update-product__line-slider">
+                                <div v-for="product in updateArr" :key="product.id" class="update-product">
+                                    <div class="product-elements">
+                                        <span>Б <br>
+                                            {{product.proteins}}
+                                        </span>
+                                        <span>Ж <br>
+                                            {{product.fats}}
+                                        </span>
+                                        <span>У <br>
+                                            {{product.carbohdrate}}
+                                        </span>
+                                        <span class="update-product-calories">{{product.calories}} калорий</span>
+
+                                    </div>
+                                    <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
+                                    <span class="update-product-name">{{product.name}}</span>
+                                    <button @click="updateProduct(product)" class="update-product-btn">Выбрать</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -122,7 +134,7 @@
                                 <span class="slide-content__comment">
                                     {{client.comment}}
                                 </span>
-                                <button class="slide-content__button">Хочу так же</button>
+                                <a href="#menu"><button class="slide-content__button"> Хочу так же</button></a>
                                 <div class="slide-content__result">
                                     -{{client.result}} кг
                                 </div>
@@ -200,6 +212,36 @@
                 </div>
 
             </section>
+            <div v-if="currentPopUp===1" class="pop-up-container">
+                <div class="pop-up">
+                    <h2> Перезвоните мне</h2>
+                    <div class="pop-up__input-container">
+                        <input value="+7" class="pop-up__input" type="text">
+                    </div>
+                    <span class="pop-up__confid">Нажимая на кнопку "Отправить", я соглашаюсь
+                        с условиями <a href="#">политики конфиденциальности.</a> </span>
+                    <button @click="sendNumber" class="pop-up__button">Отправить</button>
+                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </div>
+            </div>
+            <div v-if="currentPopUp===2" class="pop-up-container">
+                <div class="pop-up">
+                    <h2>Для уточнения деталей заказа и доставки</h2>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Ваш номер телефона ?" class="pop-up__input" type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Как вас зовут ?" class="pop-up__input" type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Ваш адресс ?" class="pop-up__input" type="text">
+                    </div>
+                    <span class="pop-up__confid">Нажимая на кнопку "Отправить", я соглашаюсь
+                        с условиями <a href="#">политики конфиденциальности.</a> </span>
+                    <button @click="sendNumber" class="pop-up__button">Отправить</button>
+                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </div>
+            </div>
         </main>
         <footer class="footer container">
             <span>2023 © Все права защищены</span>
