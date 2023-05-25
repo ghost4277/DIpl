@@ -15,15 +15,38 @@
             <div class="heder-content container">
                 <a @click="currentPage='home'" href="#" class="header-content__logo">Baskay <span>Time</span> </a>
                 <ul class="header-content__menu">
-                    <a class="header-content__menu-tel" href="tel:+79897483227">+7 (989) 748 32-27</a>
-                    <a @click="currentPopUp=1" href="#">Перезвоните мне</a>
-                    <a v-if="currentPage=='home'" href="#menu"><button>Оформить заказ</button></a>
+                    <a v-if="!isAdmin" class="header-content__menu-tel" href="tel:+79897483227">+7 (989) 748 32-27</a>
+                    <a v-if="!isAdmin" @click="currentPopUp=1" href="#">Перезвоните мне</a>
+                    <a v-if="currentPage=='home' || !isAdmin" href="#menu"><button>Оформить заказ</button></a>
                 </ul>
+                <a v-if="isAdmin" class="haeder__autorization" @click="currentPage='admin'" href="#">Панель
+                    администратора</a>
                 <a @click="currentPage='maraphon'" href="#" class="header-content__link">марафоны</a>
             </div>
+
+            <a v-if="!isAdmin" @click="currentPopUp = 3" class="haeder__autorization" href="#">Вход/Регистраиця</a>
         </header>
         <main class="main">
-            <div v-if="currentPage=='maraphon'" class="maraphons container">
+            <div v-if="currentPage==='admin'" class="admin-panel container">
+                <div class="admin-navigation">
+                    <span :class="{'active': adminPage==='menu'}" @click="adminPage = 'menu'">Рационы</span>
+                    <span :class="{'active': adminPage==='maraphon'}" @click="adminPage = 'maraphon'">Марафоны</span>
+                </div>
+                <div v-if="adminPage==='menu'" class=" admin-menu">
+                    <div class="admin-menu__categories">
+                        <span v-for="category in adminCategories" :key="category.id"
+                            :class="{'active': currentAdminCategory === category.name }"
+                            @click="currentAdminCategory=category.name"
+                            class="admin-menu__category">{{category.name}}</span>
+                    </div>
+                    <div class="admin-menu__products">
+                        <div v-for="product in adminMenu" :key="product.id" class="admin-menu__product">
+                            {{product.category}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if=" currentPage==='maraphon'" class=" maraphons container">
                 <div v-if="currentMaraphon" class="current-marphon">
                     <h2>Текущий марафон</h2>
                     <div class="maraphon__preview">
@@ -46,7 +69,8 @@
                                     {{el}}
                                 </p>
                             </div>
-                            <button @click="currentPopUp=2" class="maraphon__preview-btn">Принять участие</button>
+                            <button @click="currentPopUp=2" class="maraphon__preview-btn">Принять
+                                участие</button>
                         </div>
                     </div>
                 </div>
@@ -138,13 +162,16 @@
                                             <span>У <br>
                                                 {{product.carbohdrate}}
                                             </span>
-                                            <span class="update-product-calories">{{product.calories}} калорий</span>
+                                            <span class="update-product-calories">{{product.calories}}
+                                                калорий</span>
 
                                         </div>
                                         <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
                                         <span class="update-product-name">{{product.name}}</span>
                                         <button @click="updateProduct(product)"
-                                            class="update-product-btn">Выбрать</button>
+                                            class="update-product-btn">Выбрать</button> <span
+                                            style="font-weight: bold;">{{product. price}}
+                                            Р</span>
                                     </div>
                                 </div>
                             </div>
@@ -214,11 +241,13 @@
                             </div>
                             <div class="advice-item__content">
                                 <h3 class="advice-item__caption">Уверенность в себе</h3>
-                                <span>Похудев, вы наверняка будете вызывать зависть и восхищение, отвечать на расспросы
+                                <span>Похудев, вы наверняка будете вызывать зависть и восхищение, отвечать на
+                                    расспросы
                                     изумлённых коллег, друзей и родных.</span>
                                 <span>Вы покажете пример другим, и, возможно, этим измените чью-то жизнь к
                                     лучшему.</span>
-                                <span>Похудение облегчит процесс ходьбы: вы станете легче, без усилий будете проходить
+                                <span>Похудение облегчит процесс ходьбы: вы станете легче, без усилий будете
+                                    проходить
                                     дальние дистанции.</span>
                                 <span>Похудение позволяет поднять самооценку, вы станете больше себя ценить, что
                                     повлияет на
@@ -261,17 +290,25 @@
                         <video controls :src="'./assets/videos/'+ ditailMaraphon.video"></video>
                     </div>
                     <div class="maraphon-itog__winners">
-                        <span class="itog__winners-winner">1-ое место  {{ditailMaraphon.winner}}</span>
-                        <span class="itog__winners-second">{{ditailMaraphon.secondPlace}}</span>
-                        <span class="itog__winners-third">{{ditailMaraphon.thirdPlace}}</span>
+                        <span class="itog__winners-winner"> <span>Победитель</span> {{ditailMaraphon.winner}}</span>
+                        <span class="itog__winners-second"> <span>Почти победитель </span>
+                            {{ditailMaraphon.secondPlace}}</span>
+                        <span class="itog__winners-third"> <span>Почти почти
+                                победитель</span>{{ditailMaraphon.thirdPlace}}</span>
                     </div>
                 </div>
-                <div class="video-slider__wrapper">
-                    <div class="video-slider">
+                <h2 class="maraphon-itog__title">Результаты учатников марафона</h2>
+                <div class="video-slider__wrapper container">
+                    <div :style="{'margin-left': '-' + (currentVideo * 108.7 + '%') }" class="video-slider">
                         <div v-for="video in resultVideos" :key="video.id" class="video-slide">
                             <video controls :src="'./assets/videos/' + video.name"></video>
                         </div>
                     </div>
+                    <img :class="{disable: currentVideo == 0  }" class="video-slider__btn video-slider__btn--prev"
+                        @click="prevVideo" src="/assets/images/left_arr.png" alt="">
+                    <img :class="{disable: resultVideos.length - 1 == currentVideo  }"
+                        class="video-slider__btn video-slider__btn--next" @click="nextVideo"
+                        src="/assets/images/left_arr.png" alt="">
                 </div>
             </div>
             <div v-if=" currentPopUp===1" class="pop-up-container">
@@ -302,6 +339,43 @@
                     <span class="pop-up__confid">Нажимая на кнопку "Отправить", я соглашаюсь
                         с условиями <a href="#">политики конфиденциальности.</a> </span>
                     <button @click="sendNumber" class="pop-up__button">Отправить</button>
+                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </div>
+            </div>
+            <div v-if="currentPopUp===3" class="pop-up-container">
+                <div class="pop-up">
+                    <h2 style="text-align: center;font-size: 22px;">Вход</h2>
+                    <div class="pop-up__input-container">
+                        <input style="font-size: 20px" placeholder="Номер телефона/почта" class="pop-up__input"
+                            type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input style="font-size: 20px" placeholder="Пароль" class="pop-up__input" type="text">
+                    </div>
+                    <span class="pop-up__confid"> Нет аккаунта ? <a href="#"
+                            @click="currentPopUp=4">Заргестрируйтесь.</a> </span>
+                    <button @click="logIn" class="pop-up__button">Войти</button>
+                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </div>
+            </div>
+            <div v-if="currentPopUp===4" class="pop-up-container">
+                <div class="pop-up">
+                    <h2 style="text-align: center;font-size: 22px;">Вход</h2>
+                    <div class="pop-up__input-container">
+                        <input style="font-size: 20px" placeholder="Номер телефона/почта" class="pop-up__input"
+                            type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input style="font-size: 20px" placeholder="Пароль" class="pop-up__input" type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input style="font-size: 20px" placeholder="Повторите пароль" class="pop-up__input" type="text">
+                    </div>
+                    <span class="pop-up__confid">Нажимая на кнопку "Зарегестрироваться", я соглашаюсь
+                        с условиями <a href="#">политики конфиденциальности.</a> </span>
+                    <button @click="sendNumber" class="pop-up__button">Зарегестрироваться</button>
+                    <span class="pop-up__confid"> Уже есть аккант ? <a href="#" @click="currentPopUp=3">Войти.</a>
+                    </span>
                     <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
                 </div>
             </div>

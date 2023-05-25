@@ -9,6 +9,14 @@ const App = {
                 { id: 3, name: 'Полное', dishes: 5 },
                 { id: 4, name: 'Расширенное', dishes: 6 },
             ],
+            adminCategories: [
+                { id: 0, name: 'Завтрак', },
+                { id: 1, name: '2-ой завтрак', },
+                { id: 2, name: 'Обед', },
+                { id: 3, name: 'Полдник', },
+                { id: 4, name: 'Ужин', },
+                { id: 5, name: 'Напитки', },
+            ],
             currentCategory: 'Основное',
             // products: [
             //     { id: 0, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
@@ -98,8 +106,8 @@ const App = {
                 { id: 13, categoryId: 4, question: 'Можно ли есть BaskayTime, не разогревая?', answer: 'Все зависит от ваших вкусовых предпочтений. Вы можете съесть томатный суп и десерты без разогрева. Горячие блюда все же будут вкуснее и полезнее, если их предварительно разогреть.' },
             ],
             maraphons: [
-                { id: '0', current: true, vrewiew: 'intro.jpg', video: 'firstVideo.mp4', condition: '1.Иметь хуй больше 18 см.,2.Чёрный пояс по минету.,3.Премия за выебанного осла', gift: '1 место - машина., 2 место ' },
-                { id: '1', current: false, vrewiew: 'intro.jpg', video: 'secondVideo.mp4', winner: 'Туагазова Кристина', secondPlace: 'Кочиев Омар', thirdPlace: 'Дзукаев Зантемир', },
+                { id: '0', current: true, vrewiew: 'intro.jpg', video: 'firstVideo.mp4', condition: '1.Питаться ,2.Чёрный пояс по минету.,3.Премия за выебанного осла', gift: '1 место - машина., 2 место ' },
+                { id: '1', current: false, vrewiew: 'intro.jpg', video: 'secondVideo.mp4', winner: 'Туагазова Кристина. Приз - машина!', secondPlace: 'Кочиев Омар. Приз - питание из нашего меню', thirdPlace: 'Дзукаев Зантемир. Приз - питание из наешго меню', },
                 { id: '2', current: false, vrewiew: 'intro.jpg', video: '', winner: 'Козаев Марат', secondPlace: 'Совханова Анджела', thirdPlace: 'Савельев Тимур', },
             ],
             resultVideos: [
@@ -113,7 +121,7 @@ const App = {
             ],
             ditailMaraphon: null,
             currentMaraphon: null,
-            currentPage: 'maraphon',
+            currentPage: 'admin',
             currentQestion: null,
             currentFaq: 1,
             currentSlide: 0,
@@ -121,7 +129,11 @@ const App = {
             updateArr: [],
             currentUpdateProduct: 0,
             currentPopUp: 0,
-
+            currentVideo: 0,
+            currentUser: null,
+            isAdmin: true,
+            adminPage: 'menu',
+            currentAdminCategory: 'Завтрак'
         }
     },
     methods: {
@@ -181,6 +193,16 @@ const App = {
             else this.currentSlide++;
 
         },
+        prevVideo() {
+            if (this.currentVideo == 0) this.currentVideo = 0;
+            else this.currentVideo--;
+
+        },
+        nextVideo() {
+            if (this.resultVideos.length - 1 <= this.currentVideo) this.currentVideo = this.currentVideo;
+            else this.currentVideo++;
+
+        },
         prevProduct() {
             if (this.currentUpdateProduct == 0) this.currentUpdateProduct = 0;
             else this.currentUpdateProduct--;
@@ -201,9 +223,48 @@ const App = {
         sendNumber() {
             this.currentPopUp = 0;
         },
+        logIn() {
+            this.isAdmin = true
+            this.currentPopUp = 0;
+        }
 
     },
     computed: {
+        adminMenu() {
+            let adminMenu = [];
+            if (this.currentAdminCategory === 'Завтрак') {
+                this.breakfasts.forEach(el => {
+                    adminMenu.push(el)
+                })
+            }
+            if (this.currentAdminCategory === '2-ой завтрак') {
+                this.secondBreakfasts.forEach(el => {
+                    adminMenu.push(el)
+                })
+            }
+            if (this.currentAdminCategory === 'Обед') {
+                this.lunchs.forEach(el => {
+                    adminMenu.push(el)
+                })
+            }
+            if (this.currentAdminCategory === 'Полдник') {
+                this.snacks.forEach(el => {
+                    adminMenu.push(el)
+                })
+            }
+            if (this.currentAdminCategory === 'Ужин') {
+                this.dinners.forEach(el => {
+                    adminMenu.push(el)
+                })
+            }
+            if (this.currentAdminCategory === 'Напитки') {
+                this.waters.forEach(el => {
+                    adminMenu.push(el)
+                })
+            }
+            return adminMenu;
+
+        },
         otherMaraphons() {
             return this.maraphons.filter(el => !el.current)
         },
@@ -289,6 +350,7 @@ const App = {
         this.menu
         this.totalCalories
         this.currentMaraphon = this.maraphons.find(el => el.current)
+        this.adminMenu;
     },
     mounted() {
 
