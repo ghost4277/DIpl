@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrapper" id="app">
+        <header class="header">
+            <div class="heder-content container">
+                <a @click="currentPage='home'" href="#" class="header-content__logo">Baskay <span>Time</span> </a>
+                <ul class="header-content__menu">
+                    <a class="header-content__menu-tel" href="tel:+79897483227">+7 (989) 748 32-27</a>
+                    <a @click="currentPopUp=1" href="#">Перезвоните мне</a>
+                    <a v-if="currentPage=='home'" href="#menu"><button>Оформить заказ</button></a>
+                </ul>
+                <a @click="currentPage='maraphon'" href="#" class="header-content__link">марафоны</a>
+            </div>
+        </header>
+        <main class="main">
+            <div v-if="currentPage=='maraphon'" class="maraphons container">
+                <div v-if="currentMaraphon" class="current-marphon">
+                    <h2>Текущий марафон</h2>
+                    <div class="maraphon__preview">
+                        <img src="./assets/images/Intro.jpg" alt="">
+                    </div>
+                    <div class="maraphon__conditions">
+                        <div class="maraphon__conditions-video">
+                            <video controls :src="'./assets/videos/' + currentMaraphon.video "></video>
+                        </div>
+                        <div class="maraphon__conditions-rules">
+                            <div class="maraphon__conditions-container">
+                                <span>Условия Участия</span>
+                                <p v-for="el in splitCondition" :key="el">
+                                    {{el}}
+                                </p>
+                            </div>
+                            <div class="maraphon__conditions-container">
+                                <span>Призы</span>
+                                <p v-for="el in splitGift" :key="el">
+                                    {{el}}
+                                </p>
+                            </div>
+                            <button @click="currentPopUp=2" class="maraphon__preview-btn">Принять участие</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="other__maraphons">
+                    <h2>Предидущие марафоны</h2>
+                    <div v-for="el in otherMaraphons" class="maraphon__preview">
+                        <img :src="'./assets/images/' + el.vrewiew" alt="">
+                        <button @click="goDetail(el)" class=" maraphon__preview--orange">Подробнее</button>
+                    </div>
+                </div>
+            </div>
+            <div v-if="currentPage==='home'" class="home">
+                <section class="intro container">
+                    <img class="intro-img" src="./assets/images/Intro.jpg" alt="">
+                    <a href="#menu"><button class="intro-btn"> ВЫБРАТЬ</button></a>
+                </section>
+                <section id="menu" class=" profits container">
+                    <h2 class="section-caption">Как работает BaskayTime</h2>
+                    <div class="profits-line">
+                        <div class="profits-line__item">
+                            <img src="./assets/images/profit-calc.svg" alt="">
+                            <span>Расчитаем <br>
+                                Кбжу</span>
+                        </div>
+                        <div class="profits-line__item">
+                            <img src="./assets/images/profit-vegetabble.svg" alt="">
+                            <span>Приготовим вкусыне <br>
+                                и <br>
+                                полезные блюда</span>
+                        </div>
+                        <div class="profits-line__item">
+                            <img src="./assets/images/profit-heart.svg" alt="">
+                            <span>Немного любви </span>
+                        </div>
+                        <div class="profits-line__item">
+                            <img src="./assets/images/profit-track.svg" alt="">
+                            <span>Доставим прямо к <br>
+                                дому
+                            </span>
+                        </div>
+                    </div>
+                </section>
+                <section class="programs container">
+                    <h2 class=" section-caption">Выберите программу</h2>
+                    <div class="categories__line">
+                        <div :class="{active :currentCategory == category.name }"
+                            @click="currentCategory = category.name, menu" v-for="category in categories"
+                            :key="category.id" class="category">
+                            <span class="category-name">{{category.name}}</span> <br>
+                            <span class="category-dishes">{{category.dishes}} блюд(а)</span>
+                        </div>
+
+                    </div>
+                    <div class="current-program">
+                        <div class="product-line">
+                            <product v-for="product in currentArr" :key="product" :product="product"
+                                @editprod="editProduct">
+                            </product>
+                            <div v-for="element in totalCalories" :key="element.id" class="total-calories">
+                                <h2>В рационе: </h2>
+                                <span> <b>{{element.calories}}</b> (Ккал)</span>
+                                <div class="total-elements">
+                                    <span> <b>{{element.proteins}}</b> <br> Белки</span>
+                                    <span> <b>{{element.fats}}</b> <br> Жиры</span>
+                                    <span> <b>{{element.carbohdrate}}</b> <br> Углеводы</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button @click="currentPopUp = 2" class="current-program__button">Беру</button>
+
+                        <div v-if="updateArr!=0" class="update-product__line-container">
+                            <div class="update-product__line">
+                                <img @click="updateArr=0;currentUpdateProduct=0" src="/assets/images/krest.png" alt=""
+                                    class="update-product__krestik">
+                                <img @click="prevProduct" src="/assets/images/left_arr.png" alt=""
+                                    class="update-product__arrow update-product__arrow--left">
+                                <img @click="nextProduct" src="/assets/images/left_arr.png" alt=""
+                                    class="update-product__arrow update-product__arrow--right">
+                                <div :style="{'margin-left': '-' + (currentUpdateProduct * 106.5 + '%') }"
+                                    class="update-product__line-slider">
+                                    <div v-for="product in updateArr" :key="product.id" class="update-product">
+                                        <div class="product-elements">
+                                            <span>Б <br>
+                                                {{product.proteins}}
+                                            </span>
+                                            <span>Ж <br>
+                                                {{product.fats}}
+                                            </span>
+                                            <span>У <br>
+                                                {{product.carbohdrate}}
+                                            </span>
+                                            <span class="update-product-calories">{{product.calories}} калорий</span>
+
+                                        </div>
+                                        <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
+                                        <span class="update-product-name">{{product.name}}</span>
+                                        <button @click="updateProduct(product)"
+                                            class="update-product-btn">Выбрать</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="result container">
+                    <h2 class="section-caption">C нами худеют!</h2>
+                    <div class="slider-wrapper">
+                        <div :style="{'margin-left': '-' + (currentSlide * 110 + '%') }" class="slider">
+                            <div :class="{active : currentSlide == client.id }" v-for="client in clients"
+                                :key="client.id" class="slide">
+                                <div class="slide-img__contaienr">
+                                    <img :src="'../assets/images/' + client.img" alt="" class="slide-img">
+                                </div>
+                                <div class="slide-content">
+                                    <span class="slide-content__name">{{client.name}},{{client.howOld}} лет</span>
+                                    <ul class="slide-content__menu">
+                                        <li class="slide-content__list">{{client.programmCount}} дней</li>
+                                        <li class="slide-content__list"> по программе: {{client.programmName}}</li>
+                                    </ul>
+                                    <span class="slide-content__comment">
+                                        {{client.comment}}
+                                    </span>
+                                    <a href="#menu"><button class="slide-content__button"> Хочу так же</button></a>
+                                    <div class="slide-content__result">
+                                        -{{client.result}} кг
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <img :class="{disable : currentSlide == 0}" @click="prevSlide()" src="./assets/images/Arrow.png"
+                            alt="" class="slider-btn prev-btn">
+                        <img :class="{disable : clients.length - 1 == currentSlide }" @click="nextSlide()"
+                            src="./assets/images/Arrow1.png" alt="" class="slider-btn next-btn">
+                        <div class="pagination-line">
+                            <span v-for="pag in clients" :key="pag.id" @click="currentSlide = pag.id"
+                                :class="{active : pag.id == currentSlide}" class="pagination"></span>
+                        </div>
+                    </div>
+                </section>
+                <section class="advice">
+                    <h2 class="section-caption">Для чего это нужно?</h2>
+                    <div class="advice-items">
+                        <div class="advice-item">
+                            <div class="advice-item__content">
+                                <h3 class="advice-item__caption">Здоровье</h3>
+                                <span>Вы приведёте в норму сердечно-сосудистую систему,
+                                    похудение значительно облегчает работу сердца.</span>
+                                <span>Вы сможете подниматься по лестнице без одышки: она уходит вместе с лишними
+                                    килограммами,
+                                    как и пришла.</span>
+                                <span>Нормализация веса позволяет избавиться от депрессии, улучшает психологическое
+                                    состояние
+                                    человека.</span>
+                                <span>Вы помолодеете: похудение даёт такой эффект, если худеть правильно и принимать
+                                    витамины.</span>
+                            </div>
+
+                            <div class="advice-item__img-container">
+                                <img src="./assets/images/bigheart.jpg" alt="" class="advice-item__img">
+                            </div>
+                        </div>
+                        <div class="advice-item">
+                            <div class="advice-item__img-container">
+                                <img src="./assets/images/girl.jpg" alt="" class="advice-item__img">
+                            </div>
+                            <div class="advice-item__content">
+                                <h3 class="advice-item__caption">Уверенность в себе</h3>
+                                <span>Похудев, вы наверняка будете вызывать зависть и восхищение, отвечать на расспросы
+                                    изумлённых коллег, друзей и родных.</span>
+                                <span>Вы покажете пример другим, и, возможно, этим измените чью-то жизнь к
+                                    лучшему.</span>
+                                <span>Похудение облегчит процесс ходьбы: вы станете легче, без усилий будете проходить
+                                    дальние дистанции.</span>
+                                <span>Похудение позволяет поднять самооценку, вы станете больше себя ценить, что
+                                    повлияет на
+                                    всю вашу жизнь. Для многих похудение — это начало перемен в карьере, в личной
+                                    жизни.</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+                <section class="faq container">
+                    <h2 class="section-caption">Часто задаваемые вопросы</h2>
+                    <div class="faq-button-line">
+                        <div :class="{'active': currentFaq == tem.id}" v-for="tem in tems" :key="tem.id"
+                            @click="currentFaq = tem.id" class="faq-button__section">
+                            <img v-if="currentFaq !== tem.id" :src="'./assets/images/' + tem.img"
+                                class="faq-button__section-img"></img>
+                            <img v-else :src="'./assets/images/' + tem.img1" class="faq-button__section-img"></img>
+                            <span class="faq-button__section-title">{{tem.title}}</span>
+                        </div>
+                    </div>
+                    <div class="faq-table">
+                        <div @click="currentQestion = faq.id" v-for="faq in filtredFaq" :key="faq.id"
+                            class="faq-question">
+                            <span :class="{'active': currentQestion == faq.id}" class="question">{{faq.question}}</span>
+                            <span v-show="currentQestion == faq.id " class="answer">{{faq.answer}}</span>
+
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+            <div v-if="currentPage==='detail'" class="detail-maraphon">
+                <div class="detail-maraphon-preview">
+                    <img :src="'./assets/images/' + ditailMaraphon.vrewiew" alt="">
+                </div>
+                <h2 class="maraphon-itog__title">Подвeдение итогов</h2>
+                <div class="maraphon-itog container">
+                    <div class="maraphon-itog__video">
+                        <video controls :src="'./assets/videos/'+ ditailMaraphon.video"></video>
+                    </div>
+                    <div class="maraphon-itog__winners">
+                        <span class="itog__winners-winner">1-ое место  {{ditailMaraphon.winner}}</span>
+                        <span class="itog__winners-second">{{ditailMaraphon.secondPlace}}</span>
+                        <span class="itog__winners-third">{{ditailMaraphon.thirdPlace}}</span>
+                    </div>
+                </div>
+                <div class="video-slider__wrapper">
+                    <div class="video-slider">
+                        <div v-for="video in resultVideos" :key="video.id" class="video-slide">
+                            <video controls :src="'./assets/videos/' + video.name"></video>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if=" currentPopUp===1" class="pop-up-container">
+                <div class="pop-up">
+                    <h2> Перезвоните мне</h2>
+                    <div class="pop-up__input-container">
+                        <input value="+7" class="pop-up__input" type="text">
+                    </div>
+                    <span @click="currentPage='confid'" class="pop-up__confid">Нажимая на кнопку "Отправить", я
+                        соглашаюсь
+                        с условиями <a href="#">политики конфиденциальности.</a> </span>
+                    <button @click="sendNumber" class="pop-up__button">Отправить</button>
+                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </div>
+            </div>
+            <div v-if="currentPopUp===2" class="pop-up-container">
+                <div class="pop-up">
+                    <h2>Для уточнения деталей заказа и доставки</h2>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Ваш номер телефона ?" class="pop-up__input" type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Как вас зовут ?" class="pop-up__input" type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Ваш адресс ?" class="pop-up__input" type="text">
+                    </div>
+                    <span class="pop-up__confid">Нажимая на кнопку "Отправить", я соглашаюсь
+                        с условиями <a href="#">политики конфиденциальности.</a> </span>
+                    <button @click="sendNumber" class="pop-up__button">Отправить</button>
+                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </div>
+            </div>
+        </main>
+        <footer class="footer container">
+            <span>2023 © Все права защищены</span>
+            <div class="footer__icons">
+                <img src="./assets/images/telegram 1.svg" alt="" class="footer__icon">
+                <img src="./assets/images/twitter 1.svg" alt="" class="footer__icon">
+                <img src="./assets/images/instagram 1.svg" alt="" class="footer__icon">
+            </div>
+        </footer>
+    </div>
+    <script src="js/vue.global.js"></script>
+    <script src="js/helper.js"></script>
+    <script src="js/jquery-3.6.4.min.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script src="js/main2.js"></script>
+</body>
+
+</html>
