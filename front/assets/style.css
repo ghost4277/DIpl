@@ -753,3 +753,105 @@ body {
 .pop-up__confid a {
     text-decoration: underline solid;
 }
+/* --------------------maraphon------------ */
+.current-marphon {
+    margin-top: 60px;
+}
+.other__maraphons {
+    margin-top: 40px;
+}
+.maraphons h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.maraphon__preview {
+    width: 100%;
+    position: relative;
+    margin-bottom: 60px;
+}
+.maraphon__preview img {
+    width: 100%;
+}
+.maraphon__preview button {
+    position: absolute;
+    right: 10%;
+    bottom: 8%;
+    width: 20%;
+    padding: 10px 0px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 18px;
+    border-radius: 5px;
+}
+.maraphon__preview-btn {
+    background-color: #00a524;
+    color: white;
+}
+.maraphon__preview--orange {
+    background-color: #fd9c00;
+    color: black;
+}
+.maraphon__conditions {
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+.maraphon__conditions-video video {
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+    object-position: center center;
+    border-radius: 20px;
+}
+.maraphon__conditions-video {
+    width: 50%;
+    height: 600px;
+    border-radius: 20px;
+}
+.maraphon__conditions-rules {
+    padding: 30px 40px;
+    margin-left: 40px;
+}
+
+.maraphon__conditions-rules span {
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 20px;
+    display: block;
+    margin-bottom: 15px;
+}
+.maraphon__conditions-rules p {
+    font-size: 18px;
+    line-height: 2.5;
+    padding-left: 20px;
+    position: relative;
+}
+.maraphon__conditions-rules p::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 16px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #00a524;
+}
+.maraphon__conditions-container {
+    margin-top: 30px;
+}
+.maraphon__conditions button {
+    position: relative;
+    right: 10%;
+    bottom: 0%;
+    width: 100%;
+    padding: 10px 0px;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-top: 40px;
+    margin-left: 30px;
+}

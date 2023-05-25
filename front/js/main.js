@@ -97,6 +97,23 @@ const App = {
                 { id: 12, categoryId: 3, question: 'Смогу ли я питаться BaskayTime в разъездах или носить обеды с собой на работу?', answer: 'Наши контейнеры герметично упакованы и компактны. Обед от BaskayTime легко брать с собой и удобно есть даже сидя в пробке. Важно помнить, что в случае длительной поездки еду лучше перевозить в холодильной сумке.' },
                 { id: 13, categoryId: 4, question: 'Можно ли есть BaskayTime, не разогревая?', answer: 'Все зависит от ваших вкусовых предпочтений. Вы можете съесть томатный суп и десерты без разогрева. Горячие блюда все же будут вкуснее и полезнее, если их предварительно разогреть.' },
             ],
+            maraphons: [
+                { id: '0', current: true, vrewiew: 'intro.jpg', video: 'firstVideo.mp4', condition: '1.Иметь хуй больше 18 см.,2.Чёрный пояс по минету.,3.Премия за выебанного осла', gift: '1 место - машина., 2 место ' },
+                { id: '1', current: false, vrewiew: 'intro.jpg', video: 'secondVideo.mp4', winner: 'Туагазова Кристина', secondPlace: 'Кочиев Омар', thirdPlace: 'Дзукаев Зантемир', },
+                { id: '2', current: false, vrewiew: 'intro.jpg', video: '', winner: 'Козаев Марат', secondPlace: 'Совханова Анджела', thirdPlace: 'Савельев Тимур', },
+            ],
+            resultVideos: [
+                { id: 0, name: 'result(1.mp4' },
+                { id: 1, name: 'result(2.mp4' },
+                { id: 2, name: 'result(3.mp4' },
+                { id: 3, name: 'result(4.mp4' },
+                { id: 4, name: 'result(5.mp4' },
+                { id: 5, name: 'result(6.mp4' },
+
+            ],
+            ditailMaraphon: null,
+            currentMaraphon: null,
+            currentPage: 'maraphon',
             currentQestion: null,
             currentFaq: 1,
             currentSlide: 0,
@@ -104,9 +121,15 @@ const App = {
             updateArr: [],
             currentUpdateProduct: 0,
             currentPopUp: 0,
+
         }
     },
     methods: {
+        goDetail(el) {
+            this.currentPage = 'detail'
+            this.ditailMaraphon = el
+            console.log(this.ditailMaraphon);
+        },
         editProduct(product) {
             this.updateArr = [];
             if (product.category === 'Завтрак') {
@@ -181,6 +204,15 @@ const App = {
 
     },
     computed: {
+        otherMaraphons() {
+            return this.maraphons.filter(el => !el.current)
+        },
+        splitCondition() {
+            return this.currentMaraphon.condition.split(',')
+        },
+        splitGift() {
+            return this.currentMaraphon.gift.split(',')
+        },
         filtredFaq() {
             let filtredFaq = this.faq.filter(item => item.categoryId == this.currentFaq);
             return filtredFaq;
@@ -230,7 +262,6 @@ const App = {
                     this.waters[this.randomIndex(this.waters)]
                 ]
             }
-
         },
         totalCalories() {
             let calories = 0;
@@ -243,7 +274,6 @@ const App = {
                 proteins += el.proteins;
                 fats += el.fats;
                 carbohdrate += el.carbohdrate;
-                console.log(calories);
 
             })
             totalCalories.push({ 'calories': calories, 'proteins': proteins, 'fats': fats, 'carbohdrate': carbohdrate })
@@ -258,6 +288,7 @@ const App = {
     created() {
         this.menu
         this.totalCalories
+        this.currentMaraphon = this.maraphons.find(el => el.current)
     },
     mounted() {
 
