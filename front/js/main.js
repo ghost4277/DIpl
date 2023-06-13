@@ -1,4 +1,5 @@
 import product from "./product.js";
+import { post } from "./helper.js";
 const App = {
     data() {
         return {
@@ -9,6 +10,9 @@ const App = {
                 { id: 3, name: 'Полное', dishes: 5 },
                 { id: 4, name: 'Расширенное', dishes: 6 },
             ],
+            categoriesProducts: [
+
+            ],
             adminCategories: [
                 { id: 0, name: 'Завтрак', },
                 { id: 1, name: '2-ой завтрак', },
@@ -18,70 +22,24 @@ const App = {
                 { id: 5, name: 'Напитки', },
             ],
             currentCategory: 'Основное',
-            // products: [
-            //     { id: 0, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 1, name: "Лосось", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 2, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 3, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 4, name: "Лосось", img: "image(1).jpg", category: "2-ой завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 5, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 6, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 7, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            //     { id: 8, name: "Лосось", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-            // ],
+
             breakfasts: [
-                { id: 0, name: "Лосось", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 1, name: "фасоль", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 2, name: "Гречка", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 3, name: "Кукуруза", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 4, name: "Лосось", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 5, name: "Лосось", img: "image(1).jpg", category: "Завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
             ],
             secondBreakfasts: [
-                { id: 0, name: "Лосось", img: "image(1).jpg", category: "2-ой завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 1, name: "das", img: "image(1).jpg", category: "2-ой завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 2, name: "dsadas", img: "image(1).jpg", category: "2-ой завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 3, name: "dasd", img: "image(1).jpg", category: "2-ой завтрак", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
             ],
             lunchs: [
-                { id: 0, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 1, name: "dsa", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 2, name: "dsa", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 3, name: "312", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 4, name: "6", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 5, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 6, name: "Лосось", img: "image(1).jpg", category: "Обед", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
             ],
             snacks: [
-                { id: 0, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 1, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 2, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 3, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 4, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 5, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 6, name: "Лосось", img: "image(1).jpg", category: "Полдник", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
             ],
             dinners: [
-                { id: 0, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 1, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 2, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 3, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 4, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 5, name: "Лосось", img: "image(1).jpg", category: "Ужин", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
             ],
             waters: [
-                { id: 0, name: "Лосось", img: "image(1).jpg", category: "Вода", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 1, name: "Лосось", img: "image(1).jpg", category: "Вода", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 2, name: "Лосось", img: "image(1).jpg", category: "Вода", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 3, name: "Лосось", img: "image(1).jpg", category: "Вода", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 4, name: "Лосось", img: "image(1).jpg", category: "Вода", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
-                { id: 5, name: "Лосось", img: "image(1).jpg", category: "Вода", price: "600", calories: 200, proteins: 23, carbohdrate: 12, fats: 12 },
 
             ],
             clients: [
-                { id: 0, name: 'Сослан', howOld: 60, img: "client(1).jpg", programmName: " 'Полное' ", programmCount: 30, comment: "ффффаааааафа", result: 30, },
-                { id: 1, name: 'Сослан', howOld: 60, img: "client(1).jpg", programmName: "'Полное'", programmCount: 30, comment: "ффффаааааафа", result: 30, },
-                { id: 2, name: 'Сослан', howOld: 60, img: "client(1).jpg", programmName: "'Полное'", programmCount: 30, comment: "ффффаааааафа", result: 30, },
+                { id: 0, name: 'Сослан', howOld: 60, img: "client(1).jpg", programmName: " 'Полное' ", programmCount: 22, comment: "«Похудел на 15 кг без спорта всего за  месяц. Физических нагрузок хватало в огороде»", result: 15, },
+                { id: 1, name: 'Маир', howOld: 40, img: "client(2).jpg", programmName: "'Полное'", programmCount: 21, comment: "«Работа сидячая, по городу в основном на такси. В сентябре решил приводить себя в форму. Решил начать с питания. Заказывал линейку mFit, 1600 калорий в день. За первые две недели ушло 2  килограмма. Начал заниматься фитнесом. Сейчас мой вес 73, так же заказываю Baskay Time.   »", result: 26, },
+                { id: 2, name: 'Анжела', howOld: 37, img: "client(3).jpg", programmName: "'Основное'", programmCount: 30, comment: "«Мне очень нравится ваша еда! У меня никогда не было каких-либо очень привередливых вкусов в еде, плюс когда я решила встать на «путь истинный» = похудения, я понимала, что, мне не так важно, насколько это будет вкусно, как насколько это будет эффективно! Чтобы я не была голодной и при этом худела»", result: 18, },
             ],
             tems: [
                 { id: 0, img: 'tomato.svg', img1: 'tomato-white.svg', title: 'Продукты' },
@@ -106,9 +64,9 @@ const App = {
                 { id: 13, categoryId: 4, question: 'Можно ли есть BaskayTime, не разогревая?', answer: 'Все зависит от ваших вкусовых предпочтений. Вы можете съесть томатный суп и десерты без разогрева. Горячие блюда все же будут вкуснее и полезнее, если их предварительно разогреть.' },
             ],
             maraphons: [
-                { id: '0', current: true, vrewiew: 'intro.jpg', video: 'firstVideo.mp4', condition: '1.Питаться ,2.Чёрный пояс по минету.,3.Премия за выебанного осла', gift: '1 место - машина., 2 место ' },
-                { id: '1', current: false, vrewiew: 'intro.jpg', video: 'secondVideo.mp4', winner: 'Туагазова Кристина. Приз - машина!', secondPlace: 'Кочиев Омар. Приз - питание из нашего меню', thirdPlace: 'Дзукаев Зантемир. Приз - питание из наешго меню', },
-                { id: '2', current: false, vrewiew: 'intro.jpg', video: '', winner: 'Козаев Марат', secondPlace: 'Совханова Анджела', thirdPlace: 'Савельев Тимур', },
+                { id: '0', current: true, vrewiew: 'firstPrewiev.jpg', video: 'firstVideo.mp4', condition: 'Стоимость 7 тыс.руб ,Питание для марафонцев 450 р,3.Продолжительность - 31 день', gift: '1 место - абонемент на год в Фитнес Центр К (всё включено) + питание от Баскай Тайм на месяц., 2 место 20 000 р, 3 место 10 000 р ' },
+                { id: '1', current: false, vrewiew: 'secondPrewiev.jpg', video: 'winner(1).mp4', winner: 'Самвел. Приз - 50 тыс рублей!', secondPlace: ' Омар. Приз - питание из нашего меню', thirdPlace: 'Дзукаев Зантемир. Приз - питание из наешго меню', },
+                { id: '2', current: false, vrewiew: 'thirdPrewiev.jpg', video: 'winner(2).mp4', winner: 'Фатима. Приз - 96 тыс рублей', secondPlace: 'Анджела.Приз 30 000 р ', thirdPlace: 'Тимур. Приз - 20 000 р', },
             ],
             resultVideos: [
                 { id: 0, name: 'result(1).mp4' },
@@ -119,9 +77,13 @@ const App = {
                 { id: 5, name: 'result(6).mp4' },
 
             ],
+            orders: [
+
+            ],
+            currentOrder: {},
             ditailMaraphon: null,
             currentMaraphon: null,
-            currentPage: 'admin',
+            currentPage: 'home',
             currentQestion: null,
             currentFaq: 1,
             currentSlide: 0,
@@ -131,45 +93,105 @@ const App = {
             currentPopUp: 0,
             currentVideo: 0,
             currentUser: null,
-            isAdmin: true,
             adminPage: 'menu',
-            currentAdminCategory: 'Завтрак'
+            currentAdminCategory: 'Завтрак',
+            editingProduct: null,
+            burgerMenu: false,
+            creatingProduct: null,
+            formLog: {
+                email: null,
+                password: null,
+            },
+            formReg: {
+                email: null,
+                password: null,
+                login: null,
+                dbPassword: null,
+            },
+            user: null,
+            errors: [],
+            emptyError: false,
         }
     },
     methods: {
+        async render() {
+            this.breakfasts = await post('http://pup/public/api/products/get', { id: 1 })
+            this.secondBreakfasts = await post('http://pup/public/api/products/get', { id: 2 })
+            this.lunchs = await post('http://pup/public/api/products/get', { id: 3 })
+            this.snacks = await post('http://pup/public/api/products/get', { id: 4 })
+            this.dinners = await post('http://pup/public/api/products/get', { id: 5 })
+            this.waters = await post('http://pup/public/api/products/get', { id: 6 })
+        },
+        addToOrders() {
+            this.orders.push({ ...this.currentOrder, product: [...this.currentArr] })
+            this.currentOrder.phone = '';
+            this.currentOrder.address = '';
+            this.currentOrder.client = '';
+            this.currentPopUp = 6;
+
+        },
+        postProduct() {
+            post('http://pup/public/api/products/create', this.creatingProduct)
+            this.creatingProduct = null;
+            this.render();
+            this.currentPopUp = 7;
+        },
+        createProduct() {
+            this.creatingProduct = {};
+        },
+        confid() {
+            this.currentPage = 'confid';
+            this.currentPopUp = 0;
+        },
+        editProduct(product) {
+            this.editingProduct = product;
+        },
+        postChanges() {
+            post('http://pup/public/api/products/update', this.editingProduct);
+            this.editingProduct = null;
+            this.render()
+            this.currentPopUp = 8;
+        },
+        removeProduct(product) {
+            post('http://pup/public/api/products/delete', product);
+            this.render()
+            this.currentPopUp = 9;
+
+        },
         goDetail(el) {
             this.currentPage = 'detail'
             this.ditailMaraphon = el
             console.log(this.ditailMaraphon);
         },
-        editProduct(product) {
+        changeProduct(product) {
+
             this.updateArr = [];
-            if (product.category === 'Завтрак') {
+            if (product.category_id == '1') {
                 this.breakfasts.forEach(element => {
                     this.updateArr.push(element)
                 });
             }
-            if (product.category === '2-ой завтрак') {
+            if (product.category_id == '2') {
                 this.secondBreakfasts.forEach(element => {
                     this.updateArr.push(element)
                 });
             }
-            if (product.category === 'Обед') {
+            if (product.category_id == '3') {
                 this.lunchs.forEach(element => {
                     this.updateArr.push(element)
                 });
             }
-            if (product.category === 'Полдник') {
+            if (product.category_id == '4') {
                 this.snacks.forEach(element => {
                     this.updateArr.push(element)
                 });
             }
-            if (product.category === 'Ужин') {
+            if (product.category_id == '5') {
                 this.dinners.forEach(element => {
                     this.updateArr.push(element)
                 });
             }
-            if (product.category === 'Вода') {
+            if (product.category_id == '6') {
                 this.waters.forEach(element => {
                     this.updateArr.push(element)
                 });
@@ -179,7 +201,7 @@ const App = {
         },
         updateProduct(product) {
             this.updateArr = [];
-            let index = this.currentArr.findIndex(el => el.category === product.category);
+            let index = this.currentArr.findIndex(el => el.category_id === product.category_id);
             this.currentArr.splice(index, 1, product);
             this.currentUpdateProduct = 0;
         },
@@ -221,15 +243,52 @@ const App = {
         },
 
         sendNumber() {
-            this.currentPopUp = 0;
+            this.currentPopUp = 5;
         },
-        logIn() {
-            this.isAdmin = true
+        async logIn() {
+            const user = await post('http://pup/public/api/login', this.formLog)
+            if (user.message) {
+                this.errors = user.message;
+                return
+            }
+            this.user = user
             this.currentPopUp = 0;
-        }
+
+            this.formLog.email = ''
+            this.formLog.password = ''
+            this.errors = []
+
+        },
+        async registration() {
+            if (this.formReg.password !== this.formReg.dbPassword) {
+
+                this.errors['password'] = ['Пароли не совпадают']
+                console.log(this.errors);
+                return
+            }
+            const user = await post('http://pup/public/api/registration', this.formReg)
+            if (user.message) {
+                this.errors = user.message;
+                return
+            }
+            this.user = user
+            this.currentPopUp = 0;
+            this.errors = []
+            this.formReg.email = '';
+            this.formReg.password = '';
+            this.formReg.login = '';
+            this.formReg.dbPassword = '';
+        },
+
 
     },
     computed: {
+        isAuth() {
+            return this.user
+        },
+        isAdmin() {
+            return this.user?.role === 'admin'
+        },
         adminMenu() {
             let adminMenu = [];
             if (this.currentAdminCategory === 'Завтрак') {
@@ -285,7 +344,6 @@ const App = {
                     this.secondBreakfasts[this.randomIndex(this.secondBreakfasts)]
                 ]
             }
-
             if (this.currentCategory === 'Основное') {
                 this.currentArr = [
                     this.breakfasts[this.randomIndex(this.breakfasts)],
@@ -293,7 +351,6 @@ const App = {
                     this.dinners[this.randomIndex(this.dinners)]
                 ]
             }
-
             if (this.currentCategory === 'Доплнительное') {
                 this.currentArr = [
                     this.breakfasts[this.randomIndex(this.breakfasts)],
@@ -302,7 +359,6 @@ const App = {
                     this.dinners[this.randomIndex(this.dinners)]
                 ]
             }
-
             if (this.currentCategory === 'Полное') {
                 this.currentArr = [
                     this.breakfasts[this.randomIndex(this.breakfasts)],
@@ -312,7 +368,6 @@ const App = {
                     this.dinners[this.randomIndex(this.dinners)]
                 ]
             }
-
             if (this.currentCategory === 'Расширенное') {
                 this.currentArr = [
                     this.breakfasts[this.randomIndex(this.breakfasts)],
@@ -330,15 +385,18 @@ const App = {
             let fats = 0;
             let carbohdrate = 0;
             let totalCalories = [];
-            this.currentArr.forEach(el => {
-                calories = calories + el.calories;
-                proteins += el.proteins;
-                fats += el.fats;
-                carbohdrate += el.carbohdrate;
+            if (this.currentArr.length) {
+                this.currentArr.forEach(el => {
+                    proteins += el.proteins;
+                    calories = calories + el.calories;
+                    fats += el.fats;
+                    carbohdrate += el.carbohdrate;
 
-            })
-            totalCalories.push({ 'calories': calories, 'proteins': proteins, 'fats': fats, 'carbohdrate': carbohdrate })
-            return totalCalories
+                })
+                totalCalories.push({ 'calories': calories, 'proteins': proteins, 'fats': fats, 'carbohdrate': carbohdrate })
+                return totalCalories
+            }
+            return []
 
         }
 
@@ -346,7 +404,16 @@ const App = {
     components: {
         product
     },
-    created() {
+    async created() {
+        this.categoriesProducts = await post('http://pup/public/api/categories/all', {})
+
+        this.breakfasts = await post('http://pup/public/api/products/get', { id: 1 })
+        this.secondBreakfasts = await post('http://pup/public/api/products/get', { id: 2 })
+        this.lunchs = await post('http://pup/public/api/products/get', { id: 3 })
+        this.snacks = await post('http://pup/public/api/products/get', { id: 4 })
+        this.dinners = await post('http://pup/public/api/products/get', { id: 5 })
+        this.waters = await post('http://pup/public/api/products/get', { id: 6 })
+
         this.menu
         this.totalCalories
         this.currentMaraphon = this.maraphons.find(el => el.current)
