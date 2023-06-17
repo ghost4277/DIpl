@@ -10,9 +10,7 @@ const App = {
                 { id: 3, name: 'Полное', dishes: 5 },
                 { id: 4, name: 'Расширенное', dishes: 6 },
             ],
-            categoriesProducts: [
-
-            ],
+            categoriesProducts: [],
             adminCategories: [
                 { id: 0, name: 'Завтрак', },
                 { id: 1, name: '2-ой завтрак', },
@@ -22,20 +20,12 @@ const App = {
                 { id: 5, name: 'Напитки', },
             ],
             currentCategory: 'Основное',
-
-            breakfasts: [
-            ],
-            secondBreakfasts: [
-            ],
-            lunchs: [
-            ],
-            snacks: [
-            ],
-            dinners: [
-            ],
-            waters: [
-
-            ],
+            breakfasts: [],
+            secondBreakfasts: [],
+            lunchs: [],
+            snacks: [],
+            dinners: [],
+            waters: [],
             clients: [
                 { id: 0, name: 'Сослан', howOld: 60, img: "client(1).jpg", programmName: " 'Полное' ", programmCount: 22, comment: "«Похудел на 15 кг без спорта всего за  месяц. Физических нагрузок хватало в огороде»", result: 15, },
                 { id: 1, name: 'Маир', howOld: 40, img: "client(2).jpg", programmName: "'Полное'", programmCount: 21, comment: "«Работа сидячая, по городу в основном на такси. В сентябре решил приводить себя в форму. Решил начать с питания. Заказывал линейку mFit, 1600 калорий в день. За первые две недели ушло 2  килограмма. Начал заниматься фитнесом. Сейчас мой вес 73, так же заказываю Baskay Time.   »", result: 26, },
@@ -75,13 +65,10 @@ const App = {
                 { id: 3, name: 'result(4).mp4' },
                 { id: 4, name: 'result(5).mp4' },
                 { id: 5, name: 'result(6).mp4' },
-
             ],
-            orders: [
-
-            ],
+            orders: [],
             currentOrder: {},
-            ditailMaraphon: null,
+            ditailMaraphon: 'dsa',
             currentMaraphon: null,
             currentPage: 'home',
             currentQestion: null,
@@ -111,9 +98,21 @@ const App = {
             user: null,
             errors: [],
             emptyError: false,
+            currentMar: {},
+            adminMaraphons: [],
+            adminNumbers: [],
+            number: {},
         }
     },
     methods: {
+        addToAdminMar() {
+            this.adminMaraphons.push({ ...this.currentMar })
+            this.currentPopUp = 5
+            console.log(this.adminMaraphons, this.currentMar);
+            this.currentMar.client = '';
+            this.currentMar.address = '';
+            this.currentMar.phone = '';
+        },
         async render() {
             this.breakfasts = await post('http://pup/public/api/products/get', { id: 1 })
             this.secondBreakfasts = await post('http://pup/public/api/products/get', { id: 2 })
@@ -128,7 +127,6 @@ const App = {
             this.currentOrder.address = '';
             this.currentOrder.client = '';
             this.currentPopUp = 6;
-
         },
         postProduct() {
             post('http://pup/public/api/products/create', this.creatingProduct)
@@ -156,7 +154,6 @@ const App = {
             post('http://pup/public/api/products/delete', product);
             this.render()
             this.currentPopUp = 9;
-
         },
         goDetail(el) {
             this.currentPage = 'detail'
@@ -164,7 +161,6 @@ const App = {
             console.log(this.ditailMaraphon);
         },
         changeProduct(product) {
-
             this.updateArr = [];
             if (product.category_id == '1') {
                 this.breakfasts.forEach(element => {
@@ -196,8 +192,6 @@ const App = {
                     this.updateArr.push(element)
                 });
             }
-
-
         },
         updateProduct(product) {
             this.updateArr = [];
@@ -208,32 +202,26 @@ const App = {
         prevSlide() {
             if (this.currentSlide == 0) this.currentSlide = 0;
             else this.currentSlide--;
-
         },
         nextSlide() {
             if (this.clients.length - 1 <= this.currentSlide) this.currentSlide = this.currentSlide;
             else this.currentSlide++;
-
         },
         prevVideo() {
             if (this.currentVideo == 0) this.currentVideo = 0;
             else this.currentVideo--;
-
         },
         nextVideo() {
             if (this.resultVideos.length - 1 <= this.currentVideo) this.currentVideo = this.currentVideo;
             else this.currentVideo++;
-
         },
         prevProduct() {
             if (this.currentUpdateProduct == 0) this.currentUpdateProduct = 0;
             else this.currentUpdateProduct--;
         },
         nextProduct() {
-
             if (Math.ceil(this.updateArr.length / 3) === this.currentUpdateProduct + 1) this.currentUpdateProduct = this.currentUpdateProduct;
             else this.currentUpdateProduct++;
-
             console.log(Math.floor(this.updateArr.length / 3));
             console.log(this.currentUpdateProduct);
         },
@@ -241,9 +229,11 @@ const App = {
             const index = Math.floor(Math.random() * (array.length - 1))
             return index
         },
-
         sendNumber() {
+            this.adminNumbers.push(this.number)
+            this.number = '';
             this.currentPopUp = 5;
+            console.log(this.adminNumbers);
         },
         async logIn() {
             const user = await post('http://pup/public/api/login', this.formLog)
@@ -253,15 +243,12 @@ const App = {
             }
             this.user = user
             this.currentPopUp = 0;
-
             this.formLog.email = ''
             this.formLog.password = ''
             this.errors = []
-
         },
         async registration() {
             if (this.formReg.password !== this.formReg.dbPassword) {
-
                 this.errors['password'] = ['Пароли не совпадают']
                 console.log(this.errors);
                 return
@@ -279,8 +266,6 @@ const App = {
             this.formReg.login = '';
             this.formReg.dbPassword = '';
         },
-
-
     },
     computed: {
         isAuth() {
@@ -322,7 +307,6 @@ const App = {
                 })
             }
             return adminMenu;
-
         },
         otherMaraphons() {
             return this.maraphons.filter(el => !el.current)
@@ -391,15 +375,20 @@ const App = {
                     calories = calories + el.calories;
                     fats += el.fats;
                     carbohdrate += el.carbohdrate;
-
                 })
                 totalCalories.push({ 'calories': calories, 'proteins': proteins, 'fats': fats, 'carbohdrate': carbohdrate })
                 return totalCalories
             }
             return []
-
-        }
-
+        },
+        totalSum() {
+            let totalSum = 0;
+            this.currentArr.forEach(el => {
+                totalSum = totalSum + el.price
+            })
+            console.log(totalSum);
+            return totalSum;
+        },
     },
     components: {
         product
@@ -419,9 +408,5 @@ const App = {
         this.currentMaraphon = this.maraphons.find(el => el.current)
         this.adminMenu;
     },
-    mounted() {
-
-    }
 }
-
 Vue.createApp(App).mount('#app')

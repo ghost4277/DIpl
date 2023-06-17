@@ -34,7 +34,6 @@
                     <a @click="currentPage='maraphon'" href="#" class="header-content__link">марафоны</a>
                 </div>
             </div>
-
         </header>
         <main class="main">
             <div v-if="currentPage==='confid'" class="confid container">
@@ -102,22 +101,51 @@
                 <div class="admin-navigation">
                     <span :class="{'active': adminPage==='menu'}" @click="adminPage = 'menu'">Рационы</span>
                     <span :class="{'active': adminPage==='orders'}" @click="adminPage = 'orders'">Заказы</span>
+                    <span :class="{'active': adminPage==='adminMar'}" @click="adminPage = 'adminMar'">Марафоны</span>
+                    <span :class="{'active': adminPage==='perez'}" @click="adminPage = 'perez'">Перезвонить</span>
                 </div>
                 <div v-if="adminPage ==='orders'" class="admin-orders container">
                     <div v-if="orders.length === 0" class="empty__orders">
                         <span>Здесь пока нет заказов</span>
                     </div>
-                    <div class="admin-orders__container">
+                    <div v-else class="admin-orders__container">
+                        <h2 style="text-align: center; font-weight: normal; margin-top: 30px;">Заказы</h2>
                         <div v-for="order in orders" :key=" order.id" class="admin-menu__product">
                             <span> <b>Имя клиета</b> <br>{{order.client}}</span>
                             <span><b>Номер клиента</b> <br> {{order.phone}}</span>
                             <span><b>Адресс клиента</b> <br> {{order.address}}</span>
                             <div class="admin-product__img2-container">
-
                                 <div v-for="product in order.product" :key=" product.id" class="admin-product__img2">
                                     <img :title="product.name" :src="'./assets/images/'+ product.img " alt="">
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="adminPage ==='perez'" class="admin-orders container">
+                    <div v-if="adminNumbers.length === 0" class="empty__orders">
+                        <span>Здесь пока нет заявок</span>
+                    </div>
+                    <div v-else class="admin-orders__container">
+                        <h2 style="text-align: center; font-weight: normal; margin-top: 30px;">Уведомления с просьбой
+                            перезвонить </h2>
+                        <div style="justify-content: center;" v-for="num in adminNumbers" :key=" num.id"
+                            class="admin-menu__product">
+                            <span> <b>Номер телефона</b> <br>{{num.num}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="adminPage ==='adminMar'" class="admin-orders container">
+                    <div v-if="adminMaraphons.length === 0" class="empty__orders">
+                        <span>Здесь пока нет участиников</span>
+                    </div>
+                    <div v-else class="admin-orders__container">
+                        <h2 style="text-align: center; font-weight: normal; margin-top: 30px;">Заявки на участие в
+                            марафоне</h2>
+                        <div v-for="marr in adminMaraphons" :key=" marr.id" class="admin-menu__product">
+                            <span> <b>Имя клиета</b> <br>{{marr.client}}</span>
+                            <span><b>Номер клиента</b> <br> {{marr.phone}}</span>
+                            <span><b>Адресс клиента</b> <br> {{marr.address}}</span>
                         </div>
                     </div>
                 </div>
@@ -171,7 +199,7 @@
                                     {{el}}
                                 </p>
                             </div>
-                            <button @click="currentPopUp=2"
+                            <button @click="currentPopUp=10"
                                 class="maraphon__preview-btn maraphon__preview-btn--first ">Принять
                                 участие</button>
                         </div>
@@ -236,7 +264,6 @@
                             <span class="category-name">{{category.name}}</span> <br>
                             <span class="category-dishes">{{category.dishes}} блюд(а)</span>
                         </div>
-
                     </div>
                     <div class="current-program">
                         <div class="product-line">
@@ -247,6 +274,7 @@
                                 class="total-calories">
                                 <h2>В рационе: </h2>
                                 <span> <b>{{element.calories}}</b> (Ккал)</span>
+                                <p>Цена рациона: <b>{{totalSum}} р!</b> </p>
                                 <div class="total-elements">
                                     <span> <b>{{element.proteins}}</b> <br> Белки</span>
                                     <span> <b>{{element.fats}}</b> <br> Жиры</span>
@@ -254,16 +282,16 @@
                                 </div>
                             </div>
                         </div>
-                        <button v-if="currentArr.length" @click="currentPopUp = 2"
-                            class="current-program__button">Беру</button>
 
+                        <button v-if="currentArr.length" @click="currentPopUp = 2" class="current-program__button">
+                            Беру</button>
                         <div v-if="updateArr!=0" class="update-product__line-container">
                             <div class="update-product__line">
-                                <img @click="updateArr=0;currentUpdateProduct=0" src="/assets/images/krest.png" alt=""
+                                <img @click="updateArr=0;currentUpdateProduct=0" src="./assets/images/krest.png" alt=""
                                     class="update-product__krestik">
-                                <img @click="prevProduct" src="/assets/images/left_arr.png" alt=""
+                                <img @click="prevProduct" src="./assets/images/left_arr.png" alt=""
                                     class="update-product__arrow update-product__arrow--left">
-                                <img @click="nextProduct" src="/assets/images/left_arr.png" alt=""
+                                <img @click="nextProduct" src="./assets/images/left_arr.png" alt=""
                                     class="update-product__arrow update-product__arrow--right">
                                 <div :style="{'margin-left': '-' + (currentUpdateProduct * 106.5 + '%') }"
                                     class="update-product__line-slider">
@@ -280,9 +308,8 @@
                                             </span>
                                             <span class="update-product-calories">{{product.calories}}
                                                 калорий</span>
-
                                         </div>
-                                        <img class="update-product-img" :src="'../assets/images/' + product.img" alt="">
+                                        <img class="update-product-img" :src="'./assets/images/' + product.img" alt="">
                                         <span class="update-product-name">{{product.name}}</span>
                                         <button @click="updateProduct(product)"
                                             class="update-product-btn">Выбрать</button> <span
@@ -301,7 +328,7 @@
                             <div :class="{active : currentSlide == client.id }" v-for="client in clients"
                                 :key="client.id" class="slide">
                                 <div class="slide-img__contaienr">
-                                    <img :src="'../assets/images/' + client.img" alt="" class="slide-img">
+                                    <img :src="'./assets/images/' + client.img" alt="" class="slide-img">
                                 </div>
                                 <div class="slide-content">
                                     <span class="slide-content__name">{{client.name}},{{client.howOld}} лет</span>
@@ -346,7 +373,6 @@
                                 <span>Вы помолодеете: похудение даёт такой эффект, если худеть правильно и принимать
                                     витамины.</span>
                             </div>
-
                             <div class="advice-item__img-container ">
                                 <img src="./assets/images/bigheart.jpg" alt="" class="advice-item__img">
                             </div>
@@ -372,7 +398,6 @@
                             </div>
                         </div>
                     </div>
-
                 </section>
                 <section class="faq container">
                     <h2 class="section-caption">Часто задаваемые вопросы</h2>
@@ -390,7 +415,6 @@
                             class="faq-question">
                             <span :class="{'active': currentQestion == faq.id}" class="question">{{faq.question}}</span>
                             <span v-show="currentQestion == faq.id " class="answer">{{faq.answer}}</span>
-
                         </div>
                     </div>
 
@@ -415,7 +439,6 @@
                         </div>
                     </div>
                     <h2 class="maraphon-itog__title">Результаты других участников марафона</h2>
-
                     <div class="video-slider__wrapper ">
                         <div :style="{'margin-left': '-' + (currentVideo * 113.6 + '%') }" class="video-slider">
                             <div v-for="video in resultVideos" :key="video.id" class="video-slide">
@@ -429,20 +452,20 @@
                             src="/assets/images/left_arr.png" alt="">
                     </div>
                 </div>
-
-
             </div>
             <div v-if=" currentPopUp===1" class="pop-up-container">
                 <form @submit.prevent="sendNumber" class="pop-up">
                     <h2> Перезвоните мне</h2>
                     <div class="pop-up__input-container">
-                        <input required value="+7" class="pop-up__input" type="text">
+                        <input placeholder="+7 (989)748-32-27" v-model="number.num" required minlength="11"
+                            class="pop-up__input" type="tel">
                     </div>
                     <span class="pop-up__confid">Нажимая на кнопку "Отправить", я
                         соглашаюсь
                         с условиями <a @click="confid" href="#">политики конфиденциальности.</a> </span>
                     <input type="submit" class="pop-up__button" value="Отправить">
-                    <img @click="currentPopUp=0" src="./assets/images/krest.png" alt="" class="pop-up__close">
+                    <img @click="currentPopUp=0;number = '';" src="./assets/images/krest.png" alt=""
+                        class="pop-up__close">
                 </form>
             </div>
             <div v-if="currentPopUp===2" class="pop-up-container">
@@ -467,6 +490,28 @@
                         src="./assets/images/krest.png" alt="" class="pop-up__close">
                 </form>
             </div>
+            <div v-if="currentPopUp===10" class="pop-up-container">
+                <form @submit.prevent="addToAdminMar" class="pop-up">
+                    <h2>Регистрация на Марафон </h2>
+                    <div class="pop-up__input-container">
+                        <input required placeholder="Ваш номер телефона ?" v-model="currentMar.phone"
+                            class="pop-up__input" type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input required placeholder="Как вас зовут ?" v-model="currentMar.client" class="pop-up__input"
+                            type="text">
+                    </div>
+                    <div class="pop-up__input-container">
+                        <input placeholder="Ваш адресс? (Не обязательно)" v-model="currentMar.address"
+                            class="pop-up__input" type="text">
+                    </div>
+                    <span class="pop-up__confid">Нажимая на кнопку "Отправить", я соглашаюсь
+                        с условиями <a @click="confid" href="#">политики конфиденциальности.</a> </span>
+                    <input type="submit" value="Отправить" class="pop-up__button">
+                    <img @click="currentPopUp=0;currentMar.phone='';currentMar.client='';currentMar.address='';"
+                        src="./assets/images/krest.png" alt="" class="pop-up__close">
+                </form>
+            </div>
             <div v-if="currentPopUp===3" class="pop-up-container">
                 <form @submit.prevent="logIn" class="pop-up">
                     <h2 style="text-align: center;font-size: 22px;">Вход</h2>
@@ -476,7 +521,7 @@
                     </div>
                     <div class="pop-up__input-container">
                         <input v-model="formLog.password" style="font-size: 20px" placeholder="Пароль"
-                            required="password" class="pop-up__input" type="text">
+                            required="password" class="pop-up__input" type="password">
                     </div>
                     <span class="error" v-if="errors.length !== 0 ">{{errors}}</span>
 
@@ -502,11 +547,11 @@
                     </div>
                     <div class="pop-up__input-container">
                         <input required v-model="formReg.password" style="font-size: 20px" placeholder="Пароль"
-                            class="pop-up__input" type="text">
+                            class="pop-up__input" type="password">
                     </div>
                     <div class="pop-up__input-container">
                         <input required v-model="formReg.dbPassword" style="font-size: 20px"
-                            placeholder="Повторите пароль" class="pop-up__input" type="text">
+                            placeholder="Повторите пароль" class="pop-up__input" type="password">
                     </div>
                     <span class="error" v-if="errors?.password ">{{errors.password[0]}}</span>
 
@@ -583,7 +628,6 @@
                                 <input v-model="editingProduct.calories" style="font-size: 20px" class="pop-up__input"
                                     type="text">
                             </div>
-
                         </div>
                         <div>
                             <div class="pop-up__input-container">
@@ -604,7 +648,6 @@
                                 <input v-model="editingProduct.carbohdrate" style="font-size: 20px"
                                     class="pop-up__input" type="text">
                             </div>
-
                         </div>
                     </div>
                     <button @click="postChanges" class="pop-up__button">Редактировать</button>
@@ -640,8 +683,6 @@
                                 <input v-model="creatingProduct.price" style="font-size: 20px" class="pop-up__input"
                                     type="text">
                             </div>
-
-
                         </div>
                         <div>
                             <div class="pop-up__input-container">
@@ -668,7 +709,6 @@
                                 <input v-model="creatingProduct.fats" style="font-size: 20px" class="pop-up__input"
                                     type="text">
                             </div>
-
                         </div>
                     </div>
                     <button @click="postProduct" class="pop-up__button">Добавить</button>
@@ -687,7 +727,6 @@
                 </div>
             </footer>
         </div>
-
     </div>
     <script src="js/vue.global.js"></script>
     <script src="js/helper.js"></script>

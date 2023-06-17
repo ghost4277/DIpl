@@ -2,7 +2,7 @@ export default {
     template: `
         <div class="product">
             <div class="product-img">
-                <img   :src="'../assets/images/' + product.img" alt="">
+                <img   :src="'./assets/images/' + product.img" alt="">
             </div>
             <div>
                 <span class="product-category">{{category.name}}</span>
