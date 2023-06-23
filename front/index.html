@@ -25,7 +25,7 @@
                 <span v-if="user">{{user.email}}</span>
                 <div>
                     <a v-if="!isAuth" @click="currentPopUp = 3" class="haeder__autorization"
-                        href="#">Вход/Регистраиця</a>
+                        href="#">Вход/Регистрация</a>
                     <a v-if="isAdmin" class="haeder__admin-panel" @click="currentPage='admin'" href="#">Панель
                         администратора</a>
 
@@ -526,7 +526,7 @@
                     <span class="error" v-if="errors.length !== 0 ">{{errors}}</span>
 
                     <span class="pop-up__confid"> Нет аккаунта ? <a href="#"
-                            @click="currentPopUp=4">Заргестрируйтесь.</a> </span>
+                            @click="currentPopUp=4">Заргистрируйтесь.</a> </span>
                     <input type="submit" value="Войти" class="pop-up__button">
                     <img @click="currentPopUp=0;formLog.password='';formLog.email='';" src="./assets/images/krest.png"
                         alt="" class="pop-up__close">
@@ -534,7 +534,7 @@
             </div>
             <div v-if="currentPopUp===4" class="pop-up-container">
                 <form @submit.prevent="registration" class="pop-up">
-                    <h2 style="text-align: center;font-size: 22px;">Регистраиця</h2>
+                    <h2 style="text-align: center;font-size: 22px;">Регистрация</h2>
                     <div class="pop-up__input-container">
                         <input required v-model="formReg.email" style="font-size: 20px"
                             placeholder="Номер телефона/почта" class="pop-up__input" type="text">
@@ -555,9 +555,9 @@
                     </div>
                     <span class="error" v-if="errors?.password ">{{errors.password[0]}}</span>
 
-                    <span class="pop-up__confid">Нажимая на кнопку "Зарегестрироваться", я соглашаюсь
+                    <span class="pop-up__confid">Нажимая на кнопку "Зарегистрироваться", я соглашаюсь
                         с условиями <a @click="confid" href="#">политики конфиденциальности.</a> </span>
-                    <input type="submit" value="Зарегестрироваться" class="pop-up__button">
+                    <input type="submit" value="Зарегистрироваться" class="pop-up__button">
                     <span class="pop-up__confid"> Уже есть аккант ? <a href="#" @click="currentPopUp=3">Войти.</a>
                     </span>
                     <img @click="currentPopUp=0;formReg.email = ''; formReg.password = ''; formReg.login = ''; formReg.dbPassword = '';  "
